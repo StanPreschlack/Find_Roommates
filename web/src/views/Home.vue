@@ -2,6 +2,7 @@
 import { defineComponent } from 'vue'
 import { getAuth } from "firebase/auth"
 
+
 export default defineComponent({
   data() {
     return {
