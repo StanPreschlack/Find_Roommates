@@ -37,7 +37,7 @@ export default defineComponent({
 
 #boardContainer {
     position: absolute;
-    top: 10vh;
+    top: 75px;
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
@@ -48,6 +48,7 @@ export default defineComponent({
 }    
 
 #boardContainer h1 {
+    color: var(--background);
     border-bottom: 2px solid var(--background);
 }
 

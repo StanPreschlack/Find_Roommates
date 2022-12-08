@@ -6,6 +6,17 @@ import MakePostButton from "../components/misc/MakePostButton.vue"
 import Board from "../components/sections/Board.vue"
 
 export default defineComponent({
+  data() {
+    return {
+      //used for single page "routing"
+      profile: false,
+      board: true,
+      chats: false,
+      settings: false,
+      post: false,
+      
+    }
+  },
   components: {
     Header,
     MakePostButton,
