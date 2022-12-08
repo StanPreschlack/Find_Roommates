@@ -1,31 +1,23 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { getAuth } from "firebase/auth"
-
+import Header from "../components/misc/Header.vue"
+import MakePostButton from "../components/misc/MakePostButton.vue"
+import Board from "../components/sections/Board.vue"
 
 export default defineComponent({
-  data() {
-    return {
-      email: "email",
-    }
-  },
-  async beforeMount(){
-    // redirects unauthenticated users
-    if(getAuth().currentUser === null) {
-      this.$router.push({ name: 'login' });
-    } else {
-      // else set user info
-      this.email = getAuth().currentUser?.email as string;
-    }
-  },
+  components: {
+    Header,
+    MakePostButton,
+    Board,
+  }
 })
 
 </script>
 
 <template>
-  <div>
-    <p>{{ email }}</p>
-
-    single page app
-  </div>  
+  <Header />
+  <Board />
+  <MakePostButton />
 </template>
+

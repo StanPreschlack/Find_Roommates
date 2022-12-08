@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { googleSignIn, signInWithGitHub } from "../firebase/getDataApi"
+import { googleSignIn, signInWithGitHub } from "../firebase/api"
 
 export default defineComponent({
   methods: {

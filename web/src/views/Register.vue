@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { addUser } from "../firebase/getDataApi"
+import { addUser } from "../firebase/api"
 
 export default defineComponent({
   data() {

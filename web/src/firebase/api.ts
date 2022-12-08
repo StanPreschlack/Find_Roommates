@@ -2,6 +2,8 @@ import {signInWithPopup, GithubAuthProvider, GoogleAuthProvider, getAuth, create
 import { app } from "./app"
 import { getDatabase, ref, set, child, get, remove, type DatabaseReference } from 'firebase/database'
 
+//this is an api used by the vue components to create, fetch, and manage user data
+
 //initialize auth
 const auth = getAuth(app)
 
@@ -64,9 +66,36 @@ async function login(email:string, password:string) {
   return returnVal
 }
 
+async function addPost(user:string, name:string) {
+  
+}
+
+// async function createDoc(user:string, name:string, data:string) {
+//   let timestamp = Date.now() as number
+//   const db = getDatabase(app)
+//   let id = uniqid()
+//   await set(ref(db, "docs/" + user + "/" + id), {
+//       name: name, 
+//       data: data, 
+//       slug: slugify(name) + "~" + id,
+//       id: id,
+//       timestamp: timestamp,
+//     },
+//   )
+//   return id
+// }
+
+
+async function getAllPosts() {
+
+}
+
 export {
   addUser,
   login,
   googleSignIn,
   signInWithGitHub,
+  addPost,
+  getAllPosts,
+
 }
