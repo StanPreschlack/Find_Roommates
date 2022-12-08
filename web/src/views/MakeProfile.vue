@@ -9,7 +9,7 @@ export default defineComponent({
 
 <template>
   <div>
-        make a profile!
+    make a profile!
   </div>  
 </template>
 

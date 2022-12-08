@@ -2,3 +2,7 @@
   --text: #b5f774;
   --background: #4d0d8e;
 }
+* {
+  padding: 0;
+  margin: 0;
+}

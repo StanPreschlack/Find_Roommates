@@ -14,7 +14,7 @@ async function googleSignIn(router:Object) {
     // The signed-in user info.
     const user = result.user;
     //@ts-ignore
-    router.push({ name: 'docs' });
+    router.push({ path: '/home' });
   }).catch((error) => {
     console.log("Google sign in error")
   });
@@ -30,9 +30,9 @@ async function signInWithGitHub(router:Object) {
     // The signed-in user info.
     const user = result.user;
     //@ts-ignore
-    router.push({ name: 'docs' });
+    router.push({ path: '/home' });
   }).catch((error) => {
-    console.log("ERR GIT SGN IN")
+    console.log("Error signing in with github.")
   });
 }
 
