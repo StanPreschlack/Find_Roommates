@@ -12,7 +12,7 @@ export default defineComponent({
       this.showPopUp = !this.showPopUp;
     },
     createPost() {
-
+      
     },
   }
 })
@@ -80,6 +80,7 @@ export default defineComponent({
 #title {
   border: none;
   border-bottom: 2px solid var(--background);
+  line-height: 30px;
 }
 
 #title::placeholder {
@@ -98,6 +99,7 @@ export default defineComponent({
   height: 100%;
   resize: none;
   border: none;
+  line-height: 30px;
 }
 
 #description::placeholder {

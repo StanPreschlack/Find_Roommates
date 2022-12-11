@@ -4,9 +4,9 @@ import { getAuth } from "firebase/auth"
 import BoardPost from "../posts/BoardPost.vue"
 
 export default defineComponent({
-  components: {
-      BoardPost,
-  }
+    components: {
+        BoardPost,
+    }
 })
 
 </script>

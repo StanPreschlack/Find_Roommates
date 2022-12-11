@@ -10,7 +10,7 @@ export default defineComponent({
 
 <template>
     <div>
-        profile
+        chats
     </div>
 </template>
 
