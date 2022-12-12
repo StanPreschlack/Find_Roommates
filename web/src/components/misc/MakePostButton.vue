@@ -1,10 +1,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { addPost } from "/Users/spreschlack/Desktop/software projects/NYU_Find_Roomates/web/src/firebase/api"
+import { getAuth } from "firebase/auth"
 
 export default defineComponent({
   data() {
     return {
       showPopUp: false,
+      newPostTitle: "",
+      newPostContent: "",
     }
   },
   methods: {
@@ -12,6 +16,8 @@ export default defineComponent({
       this.showPopUp = !this.showPopUp;
     },
     createPost() {
+      //@ts-expect-error
+      addPost(getAuth().currentUser.uid, this.newPostTitle, this.newPostContent)
       
     },
   }
@@ -22,9 +28,9 @@ export default defineComponent({
 <template>
   <div v-if="showPopUp" id="popUp">
     <form>
-      <input type="text" id="title" name="title" placeholder="Your title, for example: looking for two more people for a three person apartment in the lower east side..."/>
-      <textarea type="text" id="description" name="description" placeholder="Elaborate... what's your price range?, are you okay with pets?, etc... "/>
-      <input type="submit" id="submit" value="create post"/>
+      <input type="text" v-model="newPostTitle" id="title" name="title" placeholder="Your title, for example: looking for two more people for a three person apartment in the lower east side..."/>
+      <textarea type="text" v-model="newPostContent" id="description" name="description" placeholder="Elaborate... what's your price range?, are you okay with pets?, etc... "/>
+      <input type="submit" @click.prevent="createPost" id="submit" value="create post"/>
     </form>
     <button @click.prevent="togglePopup" id="cancel">cancel</button>
   </div>

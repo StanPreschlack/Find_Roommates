@@ -1,6 +1,7 @@
 import {signInWithPopup, GithubAuthProvider, GoogleAuthProvider, getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { app } from "./app"
 import { getDatabase, ref, set, child, get, remove, type DatabaseReference } from 'firebase/database'
+import uniqid from 'uniqid'
 
 //this is an api used by the vue components to create, fetch, and manage user data
 
@@ -66,28 +67,41 @@ async function login(email:string, password:string) {
   return returnVal
 }
 
-async function addPost(user:string, name:string) {
-  
+async function addPost(user:string | null, title:string, content:string) {
+  console.log(user)
+  if (user === null) {
+    return 1
+  }
+  console.log("adding post")
+  let timestamp = Date.now() as number
+  let id = uniqid()
+  const db = getDatabase(app)
+  await set(ref(db, "posts/" + id), {
+      title: title, 
+      content: content,
+      user: user,
+      timestamp: timestamp,
+    },
+  )
+  return id
 }
 
-// async function createDoc(user:string, name:string, data:string) {
-//   let timestamp = Date.now() as number
-//   const db = getDatabase(app)
-//   let id = uniqid()
-//   await set(ref(db, "docs/" + user + "/" + id), {
-//       name: name, 
-//       data: data, 
-//       slug: slugify(name) + "~" + id,
-//       id: id,
-//       timestamp: timestamp,
-//     },
-//   )
-//   return id
-// }
-
-
 async function getAllPosts() {
-
+  let posts:object[] = []
+  await get(child(ref(getDatabase(app)), "posts")).then((snapshot) => {
+    if (snapshot.exists()) {
+      console.log(snapshot)
+      snapshot.forEach((post) => {
+        posts.push(post.val())
+      })
+    } else {
+      console.log("No data available");
+    }
+  }).catch((error) => {
+    console.error(error);
+  });
+  console.log(posts)
+  return posts.sort((d1:any, d2:any) => (d1.timestamp < d2.timestamp) ? 1 : (d1.timestamp > d2.timestamp) ? -1 : 0);
 }
 
 export {

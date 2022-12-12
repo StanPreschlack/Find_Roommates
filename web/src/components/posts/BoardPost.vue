@@ -3,14 +3,22 @@ import { defineComponent } from 'vue'
 import { getAuth } from "firebase/auth"
 
 export default defineComponent({
-  
+  props: {
+    title: String,
+    content: String,
+    timestamp: String,
+    user: String,
+  }
 })
 
 </script>
 
 <template>
     <div id="post">
-        
+        title: {{ title }} <br />
+        content: {{ content }}  <br />
+        timestamp: {{ timestamp }}  <br />
+        userID: {{ user }} <br /> 
     </div>
 </template>
 

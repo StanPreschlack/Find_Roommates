@@ -8,6 +8,11 @@ import Settings from "../components/sections/Settings.vue"
 import Profile from "../components/sections/Profile.vue"
 
 export default defineComponent({
+  beforeMount(){
+    if(getAuth().currentUser === null) {
+      this.$router.push({ path: '/login' });
+    }
+  },
   data() {
     return {
       //used for single page "routing"

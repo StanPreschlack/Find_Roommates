@@ -2,8 +2,17 @@
 import { defineComponent } from 'vue'
 import { getAuth } from "firebase/auth"
 import BoardPost from "../posts/BoardPost.vue"
+import { getAllPosts } from "/Users/spreschlack/Desktop/software projects/NYU_Find_Roomates/web/src/firebase/api"
 
 export default defineComponent({
+    data() {
+        return {
+            posts: [],
+        }
+    },
+    async beforeMount(){
+        this.posts = await getAllPosts()
+    },
     components: {
         BoardPost,
     }
@@ -14,22 +23,7 @@ export default defineComponent({
 <template>
     <div id="boardContainer">
         <h1>Recent Posts</h1>
-        <BoardPost />
-        <BoardPost />
-        <BoardPost />
-        <BoardPost />
-        <BoardPost />
-        <BoardPost />
-        <BoardPost />
-        <BoardPost />
-        <BoardPost />
-        <BoardPost />
-        <BoardPost />
-        <BoardPost />
-        <BoardPost />
-        <BoardPost />
-        <BoardPost />
-        <BoardPost />
+        <BoardPost  v-for="post in posts" :title="post.title" :content="post.content" :timestamp="post.timestamp" :user="post.user" />
     </div>
 </template>
 
