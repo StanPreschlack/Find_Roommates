@@ -17,8 +17,9 @@ export default defineComponent({
     },
     createPost() {
       //@ts-expect-error
+      this.showPopUp = false
       addPost(getAuth().currentUser.uid, this.newPostTitle, this.newPostContent)
-      
+      this.$emit('newPost')
     },
   }
 })

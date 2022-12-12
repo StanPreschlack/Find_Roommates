@@ -5,6 +5,14 @@ import BoardPost from "../posts/BoardPost.vue"
 import { getAllPosts } from "/Users/spreschlack/Desktop/software projects/NYU_Find_Roomates/web/src/firebase/api"
 
 export default defineComponent({
+    props: {
+        reload: Number,
+    },
+    watch: { 
+        reload: async function(o, n) {
+            this.posts = await getAllPosts()
+        }
+    },
     data() {
         return {
             posts: [],
@@ -23,7 +31,7 @@ export default defineComponent({
 <template>
     <div id="boardContainer">
         <h1>Recent Posts</h1>
-        <BoardPost  v-for="post in posts" :title="post.title" :content="post.content" :timestamp="post.timestamp" :user="post.user" />
+        <BoardPost v-for="post in posts" :title="post.title" :content="post.content" :timestamp="post.timestamp" :user="post.user" />
     </div>
 </template>
 

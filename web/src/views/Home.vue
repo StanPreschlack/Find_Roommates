@@ -20,6 +20,7 @@ export default defineComponent({
       board: true,
       chats: false,
       settings: false,
+      boardReload: true,
     }
   },
   components: {
@@ -52,6 +53,9 @@ export default defineComponent({
       this.setAllToFalse()
       this.settings = true
     },
+    Remount() {
+      this.boardReload = !this.boardReload
+    },
   }
 })
 
@@ -65,7 +69,7 @@ export default defineComponent({
     <button @click.prevent="Board">recent posts</button>
   </div>
   <div v-if="board">
-    <Board />
+    <Board :reload="boardReload" />
   </div>
   <div v-if="profile">
     <Profile />
@@ -76,7 +80,7 @@ export default defineComponent({
   <div v-if="settings">
     <Settings />
   </div>
-  <MakePostButton />
+  <MakePostButton @newPost="Remount"/>
 </template>
 
 <style scoped>
