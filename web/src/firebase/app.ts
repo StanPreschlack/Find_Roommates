@@ -2,6 +2,11 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
+
+// look into google messaging sdk
+
+// https://firebase.google.com/docs/cloud-messaging/js/client
+
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration

@@ -67,6 +67,8 @@ async function login(email:string, password:string) {
   return returnVal
 }
 
+//TODO: add name(s) feild
+
 async function addPost(user:string | null, title:string, content:string) {
   console.log(user)
   if (user === null) {
@@ -111,5 +113,19 @@ export {
   signInWithGitHub,
   addPost,
   getAllPosts,
+
+  //TODO: add:
+
+  //setProfileFields
+  
+  //chat functions, create a new file?
+
+  //chat functions:
+
+  //suppourt the following operations
+
+  // add chat
+  // listen to update for other's chat
+  // delete a chat you have sent
 
 }
