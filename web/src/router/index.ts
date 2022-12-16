@@ -3,7 +3,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 // async components
 
 const Landing = () => import( "../views/Landing.vue")
-const MakeProfile = () => import("../views/MakeProfile.vue")
 const Home = () => import("../views/Home.vue")
 const Login = () => import("../views/Login.vue")
 
@@ -17,10 +16,6 @@ const router = createRouter({
     {
       path: "/login",
       component: Login
-    },
-    {
-      path: "/make-profile",
-      component: MakeProfile
     },
     {
       path: "/home",

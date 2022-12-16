@@ -1,9 +1,19 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { getAuth } from "firebase/auth"
+import { sendMessage, deleteMessage, getMessages, getUserChatIds } from "/Users/spreschlack/Desktop/software projects/NYU_Find_Roomates/web/src/firebase/chat"
+import Chat from "/Users/spreschlack/Desktop/software projects/NYU_Find_Roomates/web/src/components/messaging/Chat.vue"
 
 export default defineComponent({
-
+    data() {
+        return {
+            chats: null,
+            currentChat: null,
+        }
+    },
+    async beforeMount(){
+        this.chats = getUserChatIds(getAuth().currentUser.uid)
+    },
 })
 
 </script>
@@ -11,24 +21,11 @@ export default defineComponent({
 <template>
     <div id="chats">
         <div id="people">
-            <div>person</div>   
-            <div>person</div> 
-            <div>person</div> 
-            <div>person</div> 
+            <div v-for="chat in chats">
+                {{ chat.chat }}
+            </div>   
         </div>    
-        <div class="chat-container">
-            <div class="chat-bubble other">
-                <p>Hello! How can I help you?</p>
-            </div>
-            <div class="chat-bubble me">
-                <p>Hi! I was wondering if you could tell me more about the services you offer.</p>
-            </div>
-            <div class="chat-bubble other">
-                <p>Sure! We offer a variety of services, including web design, app development, and branding. Let me know if you have any specific questions.</p>
-            </div>
-            <textarea type="text"/>
-            <button>send</button>
-        </div>
+        <Chat messages="currentChat" />
     </div>    
 </template>
 
@@ -58,7 +55,6 @@ export default defineComponent({
     cursor: pointer;
 }
 
-
 #chats {
     position: absolute;
     display: flex;
@@ -68,91 +64,8 @@ export default defineComponent({
     top: 100px;
     left: 50%;
     transform: translateX(-50%);
-}
-
-.chat-container {
-    position: relative;
-    width: 50%;
-    max-width: 500px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
     margin: 20px;
-    height: fit-content;
-    border-left: 1px dashed var(--background);
-}
-
-.chat-container textarea {
-    position: relative;
-    width: 90%;
-    left: 50%;
-    transform: translateX(-50%);
-    right: 0;
-    background-color: var(--omni);
-    border: none;
-    border-bottom: 1px solid var(--background);
-    border-radius: 0;
-    height: fit-content;
-    resize: none;
-    overflow: show;
-}
-
-.chat-container textarea:focus {
-    outline: none;
-    border-bottom: 5px solid var(--background);
-    font-size: 1rem;
-}
-
-.chat-container button {
-    position: relative;
-    width: 50%;
-    min-width: 50px;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: var(--omni);
-    color: var(--background);
-    border: none;
-    height: 40px;
-    border-radius: 25px;
-    margin-top: 10px;
-    border: 2px solid var(--background);
-    transition: 0.5s;
-}
-
-.chat-container button:hover {
-  cursor: pointer;
-  background-color: var(--background);
-  color: var(--text);
-}
-
-.chat-bubble {
-    border-radius: 10px;
-    padding: 10px 15px;
-    margin: 10px;
-    max-width: 60%;
-    animation: fadeIn 1s linear;
-}
-
-.me {
-    align-self: flex-end;
-    background-color: var(--background);
-    color: var(--text);
-}
-
-.other {
-    color: var(--background);
-    border: 1px solid var(--background);
-}
-
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+    margin-bottom: 60px;
 }
 
 </style>

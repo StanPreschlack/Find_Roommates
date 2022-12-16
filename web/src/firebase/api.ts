@@ -70,12 +70,11 @@ async function login(email:string, password:string) {
 //TODO: add name(s) feild
 
 async function addPost(user:string | null, title:string, content:string) {
-  console.log(user)
   if (user === null) {
     return 1
   }
   console.log("adding post")
-  let timestamp = Date.now() as number
+  let timestamp = Date.now().toString()
   let id = uniqid()
   const db = getDatabase(app)
   await set(ref(db, "posts/" + id), {
@@ -117,15 +116,4 @@ export {
   //TODO: add:
 
   //setProfileFields
-  
-  //chat functions, create a new file?
-
-  //chat functions:
-
-  //suppourt the following operations
-
-  // add chat
-  // listen to update for other's chat
-  // delete a chat you have sent
-
 }

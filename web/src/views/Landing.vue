@@ -3,6 +3,20 @@ import { defineComponent } from 'vue'
 import { googleSignIn, signInWithGitHub } from "../firebase/api"
 import { addUser } from "../firebase/api"
 
+// TODO: 
+
+// add/finish the following features
+
+// chat
+
+// change settings
+
+// posts
+
+// other user profile + add user to chats
+
+// polish ui, add a/b test
+
 export default defineComponent({
   data() {
     return {
@@ -32,7 +46,7 @@ export default defineComponent({
           this.valid = user
         }
       } else {
-        this.$router.push({ path: '/make-profile' });
+        this.$router.push({ path: '/home' });
         console.log("success!!")
       }
     }
@@ -123,7 +137,6 @@ h1 {
   padding: 2vw;
   border-radius: 25px;
   transition: 0.5s;
-  
 }
 
 #login-register-container:hover {

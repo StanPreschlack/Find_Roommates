@@ -2,13 +2,13 @@
 import { defineComponent } from 'vue'
 import { getAuth } from "firebase/auth"
 
-// async imports
+// TODO: code split imports
 
-const MakePostbutton = () => import("../components/misc/MakePostButton.vue")
-const Board = () => import("../components/sections/Board.vue")
-const Chats = () => import("../components/sections/Chats.vue")
-const Settings = () => import("../components/sections/Settings.vue")
-const Profile = () => import("../components/sections/Profile.vue")
+import MakePostButton from "../components/misc/MakePostButton.vue"
+import Board from "../components/sections/Board.vue"
+import Chats from "../components/sections/Chats.vue"
+import Settings from "../components/sections/Settings.vue"
+import Profile from "../components/sections/Profile.vue"
 
 export default defineComponent({
   beforeMount() {
@@ -24,6 +24,7 @@ export default defineComponent({
       chats: false,
       settings: false,
       boardReload: true,
+      makePostButton: true,
     }
   },
   components: {
@@ -43,18 +44,22 @@ export default defineComponent({
     Profile() {
       this.setAllToFalse()
       this.profile = true
+      this.makePostButton = false
     },
     Board() {
       this.setAllToFalse()
       this.board = true
+      this.makePostButton = true
     },
     Chats() {
       this.setAllToFalse()
       this.chats = true
+      this.makePostButton = false
     },
     Settings() {
       this.setAllToFalse()
       this.settings = true
+      this.makePostButton = false
     },
     Remount() {
       this.boardReload = !this.boardReload
@@ -74,6 +79,9 @@ export default defineComponent({
   <div v-if="board">
     <Board :reload="boardReload" />
   </div>
+  <div id="loadingIcon">
+    <div></div>
+  </div>
   <div v-if="profile">
     <Profile />
   </div>
@@ -83,12 +91,59 @@ export default defineComponent({
   <div v-if="settings">
     <Settings />
   </div>
-  <MakePostButton @newPost="Remount"/>
+  <MakePostButton v-if="makePostButton" @newPost="Remount"/>
 </template>
 
 <style scoped>
-#header {
+
+#loadingIcon {
   position: absolute;
+  display: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 50px;
+  width: 50px;
+  background-color: var(--background);
+  border-radius: 50%;
+  border: 5px dashed var(--text);
+  animation: spin 1s linear infinite;
+}
+
+#loadingIcon div {
+  height: 50px;
+  width: 50px;
+  background-color: var(--omni);
+  border-radius: 50%;
+  animation: pulse 1s linear infinite;
+}
+
+/* just some loading icon animations */
+
+@keyframes pulse {
+  0% {
+    background-color: var(--omni);
+  }
+  50% {
+     background-color: var(--background);
+  }
+  100% {
+    background-color: var(--omni);
+  }
+}
+
+@keyframes spin {
+  from {
+     transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#header {
+  position: fixed;
+  z-index: 100;
   display: flex;
   flex-direction: row;
   top: 0;
