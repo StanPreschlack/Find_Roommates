@@ -1,5 +1,5 @@
-# NYU Find Roommates
-### An in-development social site for finding roommates at New York University 
+# Find Roommates
+### An in-development social site for finding roommates within your email institution
 
 See the web and flutter README.md files to learn more about the two main deployments specifically.
 
