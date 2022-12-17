@@ -68,29 +68,32 @@ async function getUserChatIds(userId:string) {
     // TODO: solve potential issue, this does not solve the issue of duplicate chat ids in the database, it just filters out the duplicates on the client side
     let Chats:string[] = []
     let Targets:string[] = []
+    let Names:string[] = []
     chats.forEach((chat:any) => {
         if (!Chats.includes(chat.chatId)) {
             Chats.push(chat.chatId)
             Targets.push(chat.target)
+            Names.push(chat.name)
         }
     })
-    return [Chats, Targets]
+    return [Chats, Targets, Names]
 }
 
 // writes a new message to a chat data structure in firebase, then returns the state of the chat being written to
 
-async function sendMessage(targetId:string, senderId:string, content:string) {
+async function sendMessage(targetId:string, senderId:string, content:string, name?:string) {
     let chatId = getChatId(targetId, senderId)
     let messageId = uniqid()
 
     // add the chatIds to both users account storage
 
     // this if checks to make sure the chat does not already exist in which case it simply adds the chat to the existing chat below
-    if ((await getMessages(chatId)).length < 1) {
+    if (name !== null) {
         
         await push(ref(getDatabase(app), "users/" + targetId), 
             {
                 chatId: chatId,
+                name: name,
                 target: senderId,
             }
         )
@@ -98,6 +101,7 @@ async function sendMessage(targetId:string, senderId:string, content:string) {
         await push(ref(getDatabase(app), "users/" + senderId), 
             {
                 chatId: chatId,
+                name: name,
                 target: targetId,
             }
         )
@@ -127,6 +131,10 @@ async function deleteMessage(chatId:string, messageId:string) {
     } catch (err) {
         return "remove failed"
     }
+}
+
+async function setNames(userId:string, settings:string[]) {
+
 }
 
 export {

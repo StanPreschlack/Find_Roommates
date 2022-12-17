@@ -2,7 +2,6 @@
 import { defineComponent, toRaw } from 'vue'
 import { getAuth } from "firebase/auth"
 import { sendMessage, deleteMessage, getMessages, getUserChatIds } from "/Users/spreschlack/Desktop/software projects/NYU_Find_Roomates/web/src/firebase/chat"
-import Chat from "/Users/spreschlack/Desktop/software projects/NYU_Find_Roomates/web/src/components/messaging/Chat.vue"
 
 export default defineComponent({
     data() {
@@ -14,15 +13,14 @@ export default defineComponent({
             me: [],
             onIndex: 0,
             inputState: "",
+            names: [],
         }
-    },
-    components: {
-        Chat,
     },
     async beforeMount() {
         let data = await getUserChatIds(getAuth().currentUser.uid)
         this.chats = data[0]
         this.targets = data[1]
+        this.names = data[2]
         this.currentChatId = this.chats[this.onIndex]
         this.messages = await getMessages(this.currentChatId)
     },
@@ -58,8 +56,7 @@ export default defineComponent({
     <div id="chats">
         <div id="people">
             <div v-for="(chat, index) in chats" @click.prevent="showChat(index)">
-                 <input type="text" placeholder="unamed contact" />
-                {{ chat.chatId }}
+                 <input type="text" placeholder="enter contact name" :value="this.names[index]"/>
             </div>   
         </div>    
         <div class="chat-container">
@@ -67,11 +64,11 @@ export default defineComponent({
                 <button @click.prevent="Delete(message)" id="delete">delete</button>
                 {{ message.content }}
             </div>
-        <div id="messageArea">
-            <textarea v-model="inputState" type="text"/>
-            <button @click.prevent="sendMessage">send</button>
-        </div>
-    </div> 
+            <div id="messageArea">
+                <textarea v-model="inputState" type="text"/>
+                <button @click.prevent="sendMessage">send</button>
+            </div>
+        </div> 
     </div>    
 </template>
 

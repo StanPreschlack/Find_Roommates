@@ -69,7 +69,7 @@ async function login(email:string, password:string) {
 
 //TODO: add name(s) feild
 
-async function addPost(user:string | null, title:string, content:string) {
+async function addPost(user:string | null, title:string, name:string,content:string) {
   if (user === null) {
     return 1
   }
@@ -81,6 +81,7 @@ async function addPost(user:string | null, title:string, content:string) {
       title: title, 
       content: content,
       user: user,
+      name: name,
       timestamp: timestamp,
     },
   )

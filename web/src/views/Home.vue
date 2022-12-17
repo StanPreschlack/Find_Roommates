@@ -63,10 +63,10 @@ export default defineComponent({
     Remount() {
       this.boardReload = !this.boardReload
     },
-    async sendChat(targetId:string) {
+    async sendChat(targetId:string, name:string) {
       if (getAuth().currentUser.uid !== targetId) {
         this.setAllToFalse()
-        await sendMessage(targetId, getAuth().currentUser.uid, "hello!")
+        await sendMessage(targetId, getAuth().currentUser.uid, "hello!", name)
         this.chats = true
       }
     }

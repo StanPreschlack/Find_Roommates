@@ -9,6 +9,7 @@ export default defineComponent({
       showPopUp: false,
       newPostTitle: "",
       newPostContent: "",
+      name: "",
     }
   },
   methods: {
@@ -18,7 +19,7 @@ export default defineComponent({
     createPost() {
       //@ts-expect-error
       this.showPopUp = false
-      addPost(getAuth().currentUser.uid, this.newPostTitle, this.newPostContent)
+      addPost(getAuth().currentUser.uid, this.newPostTitle, this.name, this.newPostContent)
       this.$emit('newPost')
     },
   }
@@ -30,6 +31,7 @@ export default defineComponent({
   <div v-if="showPopUp" id="popUp">
     <form>
       <input type="text" v-model="newPostTitle" id="title" name="title" placeholder="Your title, for example: looking for two more people for a three person apartment in the lower east side..."/>
+      <input type="text" v-model="name" id="name" name="name" placeholder="Enter your name (this will be your contact name if anyone reaches out)"/>
       <textarea type="text" v-model="newPostContent" id="description" name="description" placeholder="Elaborate... what's your price range?, are you okay with pets?, etc... "/>
       <input type="submit" @click.prevent="createPost" id="submit" value="create post"/>
     </form>
@@ -88,6 +90,23 @@ export default defineComponent({
   border: none;
   border-bottom: 2px solid var(--background);
   line-height: 30px;
+}
+
+#name {
+  border: none;
+  border-bottom: 2px solid var(--background);
+  line-height: 30px;
+}
+
+#name:focus {
+  outline: 2px solid var(--text);
+}
+
+#name::placeholder {
+  font-weight: bold;
+  font-size: 1rem;
+  opacity: .5;
+  color: var(--background);
 }
 
 #title::placeholder {

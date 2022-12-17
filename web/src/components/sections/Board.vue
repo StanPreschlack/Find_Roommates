@@ -32,9 +32,9 @@ export default defineComponent({
                 }
             })
         },
-        send(targetId:string) {
+        send(targetId:string, name:string) {
             // send message up again
-            this.$emit('sendChat', targetId)
+            this.$emit('sendChat', targetId, name)
         }
     },
     components: {
@@ -48,7 +48,7 @@ export default defineComponent({
     <div id="boardContainer">
         <h1>Recent Posts</h1>
         <input type="text" v-model="query" placeholder="search posts" id="search"/>
-        <BoardPost v-for="post in filter(posts)" :title="post.title" :content="post.content" :timestamp="post.timestamp" :user="post.user" @sendChat="send(post.user)"/>
+        <BoardPost v-for="post in filter(posts)" :title="post.title" :content="post.content" :timestamp="post.timestamp" :user="post.user" @sendChat="send(post.user, post.name)"/>
     </div>
 </template>
 
