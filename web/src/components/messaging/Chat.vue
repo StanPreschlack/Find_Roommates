@@ -5,20 +5,33 @@ import { sendMessage, deleteMessage, getMessages, getUserChatIds } from "/Users/
 
 export default defineComponent({
     props: {
-        messages: [], 
-    }
+        chatId: String, 
+        // me: [],
+        // other: [],
+    },
+    data() {
+        return {
+            messages: [],
+        }
+    },
+    async created() {
+        console.log(this.chatId)
+    },
 })
 
 </script>
 
 <template>  
     <div class="chat-container">
-        <div class="chat-bubble other">
+        <div class="chat-bubble other" v-for="message in messages">
+            {{ message }}
+        </div>
+        <!-- <div class="chat-bubble other" v-for="chat in other">
             <p>Hello! How can I help you?</p>
-        </div>
-        <div class="chat-bubble me">
+        </div> -->
+        <!-- <div class="chat-bubble me" v-for="chat in me">
             <p>Hi! I was wondering if you could tell me more about the services you offer.</p>
-        </div>
+        </div> -->
         <textarea type="text"/>
         <button>send</button>
     </div>   

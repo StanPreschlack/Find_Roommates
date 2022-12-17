@@ -32,8 +32,9 @@ export default defineComponent({
                 }
             })
         },
-        send(targetId) {
-            console.log(targetId)
+        send(targetId:string) {
+            // send message up again
+            this.$emit('sendChat', targetId)
         }
     },
     components: {

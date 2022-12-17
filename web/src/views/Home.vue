@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { getAuth } from "firebase/auth"
+import { sendMessage, deleteMessage, getMessages, getUserChatIds } from "/Users/spreschlack/Desktop/software projects/NYU_Find_Roomates/web/src/firebase/chat"
 
 // TODO: code split imports
 
@@ -40,11 +41,11 @@ export default defineComponent({
       this.chats = false
       this.settings = false
       this.profile = false
+      this.makePostButton = false
     },
     Profile() {
       this.setAllToFalse()
       this.profile = true
-      this.makePostButton = false
     },
     Board() {
       this.setAllToFalse()
@@ -54,16 +55,19 @@ export default defineComponent({
     Chats() {
       this.setAllToFalse()
       this.chats = true
-      this.makePostButton = false
     },
     Settings() {
       this.setAllToFalse()
       this.settings = true
-      this.makePostButton = false
     },
     Remount() {
       this.boardReload = !this.boardReload
     },
+    async sendChat(targetId:string) {
+      this.setAllToFalse()
+      await sendMessage(targetId, getAuth().currentUser.uid, "hello!")
+      this.chats = true
+    }
   }
 })
 
@@ -77,7 +81,7 @@ export default defineComponent({
     <button @click.prevent="Board">recent posts</button>
   </div>
   <div v-if="board">
-    <Board :reload="boardReload" />
+    <Board :reload="boardReload" @sendChat="sendChat"/>
   </div>
   <div id="loadingIcon">
     <div></div>
