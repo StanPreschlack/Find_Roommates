@@ -12,25 +12,42 @@ export default defineComponent({
             messages: [],
             other: [],
             me: [],
+            onIndex: 0,
+            inputState: "",
         }
     },
     components: {
         Chat,
     },
     async beforeMount() {
-        this.chats = await getUserChatIds(getAuth().currentUser.uid)
-        this.currentChatId = this.chats[0]
+        let data = await getUserChatIds(getAuth().currentUser.uid)
+        this.chats = data[0]
+        this.targets = data[1]
+        this.currentChatId = this.chats[this.onIndex]
         this.messages = await getMessages(this.currentChatId)
     },
     methods: {
         // splits by user for css styling
         splitMessages() {
-
+            
+        },
+        async Delete(message:object) {
+            console.log(message)
+            await deleteMessage(this.currentChatId, message.messageId)
+            this.messages = await getMessages(this.currentChatId)
         },
         // gets messages from chat id and updates chat area
         async showChat(index:number) {
             this.currentChatId = this.chats[index]
             this.messages = await getMessages(this.currentChatId)
+            this.onIndex = index
+        },
+        async sendMessage() {
+            if (this.inputState !== "") {
+                await sendMessage(this.targets[this.onIndex].toString(), getAuth().currentUser.uid.toString(), this.inputState.toString())
+                this.messages = await getMessages(this.currentChatId)
+                this.inputState = ""
+            }
         },
     },
 })
@@ -47,17 +64,45 @@ export default defineComponent({
         </div>    
         <div class="chat-container">
             <div class="chat-bubble {{ me }}" v-for="(message, index) in messages">
+                <button @click.prevent="Delete(message)" id="delete">delete</button>
                 {{ message.content }}
             </div>
         <div id="messageArea">
-            <textarea type="text"/>
-            <button>send</button>
+            <textarea v-model="inputState" type="text"/>
+            <button @click.prevent="sendMessage">send</button>
         </div>
     </div> 
     </div>    
 </template>
 
 <style scoped>
+
+#delete {
+    position: relative;
+    width: 50%;
+    max-width: 25px;
+    height: 50%;
+    max-height: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+    transition: 0.5s;
+    border: none;
+    z-index: 10;
+    border: 2px solid var(--background);
+}
+
+#delete:hover {
+    border: 2px solid var(--text);
+}
+
+.on {
+    background-color: red;
+}
+
+.off {
+    background-color: white;
+}
 
 #messageArea {
     position: relative;
@@ -88,6 +133,25 @@ export default defineComponent({
     color: var(--text);
     background-color: var(--background);
     cursor: pointer;
+}
+
+#people input {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    text-align: center;
+    color: var(--background);
+}
+
+#people input:hover {
+    color: var(--text);
+}
+
+#people input:focus {
+    outline: 3px solid var(--text);
 }
 
 #chats {
@@ -166,6 +230,19 @@ export default defineComponent({
     margin: 10px;
     max-width: 60%;
     animation: fadeIn 1s linear;
+    transition: 0.5s;
+    overflow-wrap: break-word;
+}
+
+.chat-bubble:hover {
+    background-color: var(--omni);
+    border: 2px dashed var(--background);
+    color: var(--background);
+}
+
+.chat-bubble:hover #delete {
+    display: inline;
+    cursor: pointer;
 }
 
 .me {

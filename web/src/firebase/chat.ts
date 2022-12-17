@@ -45,7 +45,7 @@ async function getMessages(chatId:string) {
     }).catch((error) => {
         console.error(error);
     })
-    return messages.sort((m1:any, m2:any) => (m1.timestamp < m2.timestamp) ? 1 : (m1.timestamp > m2.timestamp) ? -1 : 0);
+    return messages.sort((m1:any, m2:any) => (m1.timestamp > m2.timestamp) ? 1 : (m1.timestamp < m2.timestamp) ? -1 : 0);
 } 
 
 // this is used to assign an id to each convo without loading in all chats to improve performance, however it also increses the complexity of the interface so could maybe be improved
@@ -67,13 +67,14 @@ async function getUserChatIds(userId:string) {
     })
     // TODO: solve potential issue, this does not solve the issue of duplicate chat ids in the database, it just filters out the duplicates on the client side
     let Chats:string[] = []
+    let Targets:string[] = []
     chats.forEach((chat:any) => {
         if (!Chats.includes(chat.chatId)) {
             Chats.push(chat.chatId)
+            Targets.push(chat.target)
         }
     })
-    console.log(Chats)
-    return Chats
+    return [Chats, Targets]
 }
 
 // writes a new message to a chat data structure in firebase, then returns the state of the chat being written to
@@ -89,13 +90,15 @@ async function sendMessage(targetId:string, senderId:string, content:string) {
         
         await push(ref(getDatabase(app), "users/" + targetId), 
             {
-                chatId: chatId
+                chatId: chatId,
+                target: senderId,
             }
         )
 
         await push(ref(getDatabase(app), "users/" + senderId), 
             {
-                chatId: chatId
+                chatId: chatId,
+                target: targetId,
             }
         )
     }
@@ -108,6 +111,7 @@ async function sendMessage(targetId:string, senderId:string, content:string) {
             target: targetId, 
             sender: senderId,
             content: content,
+            messageId: messageId,
         }
     )   
 
