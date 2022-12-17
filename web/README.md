@@ -1,4 +1,4 @@
-# web deploy of nyu find roommates
+# web deploy of find roommates
 
 ## site map
 
