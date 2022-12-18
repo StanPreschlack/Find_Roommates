@@ -28,6 +28,7 @@ export default defineComponent({
         // splits by user for css styling
         splitMessages() {
             this.messages.forEach((message) => {
+                console.log(message, getAuth().currentUser.uid)
                 if (message.sender === getAuth().currentUser.uid) {
                     message.class = "me"
                 } else {
@@ -39,6 +40,7 @@ export default defineComponent({
             console.log(message)
             await deleteMessage(this.currentChatId, message.messageId)
             this.messages = await getMessages(this.currentChatId)
+            this.splitMessages()
         },
         // gets messages from chat id and updates chat area
         async showChat(index:number) {
@@ -46,6 +48,7 @@ export default defineComponent({
             this.currentChatId = this.chats[index]
             this.messages = await getMessages(this.currentChatId)
             console.log(this.onIndex)
+            this.splitMessages()
         },
         async sendMessage() {
             if (this.inputState !== "") {
@@ -53,6 +56,7 @@ export default defineComponent({
                 await sendMessage(this.targets[this.onIndex], getAuth().currentUser.uid, this.inputState)
                 this.messages = await getMessages(this.currentChatId)
                 this.inputState = ""
+                this.splitMessages()
             }
         },
     },
@@ -70,7 +74,7 @@ export default defineComponent({
         <div class="chat-container">
             <div v-for="(message, index) in messages" class="chat-bubble {{ message.class }}">
                 <button @click.prevent="Delete(message)" id="delete">delete</button>
-                {{ message.content }}
+                {{ message.class }}
             </div>
             <div id="messageArea">
                 <textarea v-model="inputState" type="text"/>

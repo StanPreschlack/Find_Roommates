@@ -110,7 +110,7 @@ async function sendMessage(targetId:string, senderId:string, content:string, nam
 
     // add to chats feild (will overwrite duplicate in case of two way message initiation)
 
-    await set(ref(getDatabase(app), "chats/" + chatId + "/" + messageId), 
+    await update(ref(getDatabase(app), "chats/" + chatId + "/" + messageId), 
         {
             timestamp: Date.now().toString(),
             target: targetId, 
