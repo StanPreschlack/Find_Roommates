@@ -21,6 +21,7 @@ export default defineComponent({
         this.chats = data[0]
         this.targets = data[1]
         this.names = data[2]
+        console.log(this.names)
         this.currentChatId = this.chats[this.onIndex]
         this.messages = await getMessages(this.currentChatId)
     },
@@ -36,13 +37,13 @@ export default defineComponent({
         },
         // gets messages from chat id and updates chat area
         async showChat(index:number) {
+            this.onIndex = index
             this.currentChatId = this.chats[index]
             this.messages = await getMessages(this.currentChatId)
-            this.onIndex = index
         },
         async sendMessage() {
             if (this.inputState !== "") {
-                await sendMessage(this.targets[this.onIndex].toString(), getAuth().currentUser.uid.toString(), this.inputState.toString())
+                await sendMessage(this.targets[this.onIndex], getAuth().currentUser.uid, this.inputState)
                 this.messages = await getMessages(this.currentChatId)
                 this.inputState = ""
             }
@@ -56,7 +57,7 @@ export default defineComponent({
     <div id="chats">
         <div id="people">
             <div v-for="(chat, index) in chats" @click.prevent="showChat(index)">
-                 <input type="text" placeholder="enter contact name" :value="this.names[index]"/>
+                <p>{{ names[index] }}</p>
             </div>   
         </div>    
         <div class="chat-container">

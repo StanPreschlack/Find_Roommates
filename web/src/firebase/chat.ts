@@ -88,7 +88,8 @@ async function sendMessage(targetId:string, senderId:string, content:string, nam
     // add the chatIds to both users account storage
 
     // this if checks to make sure the chat does not already exist in which case it simply adds the chat to the existing chat below
-    if (name !== null) {
+    // UPDATE: no external calls needed!!, use name instead
+    if (name) {
         
         await push(ref(getDatabase(app), "users/" + targetId), 
             {
@@ -131,10 +132,6 @@ async function deleteMessage(chatId:string, messageId:string) {
     } catch (err) {
         return "remove failed"
     }
-}
-
-async function setNames(userId:string, settings:string[]) {
-
 }
 
 export {
