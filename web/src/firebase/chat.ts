@@ -18,7 +18,7 @@ function getChatId(userIdOne:string, userIdTwo:string) {
     let twoArr = userIdTwo.toLowerCase().split("")
     let chatId:string[] = []
     // o is for one t is for two
-    for (let o = 0, t = 0; o < oneArr.length, t < twoArr.length; ) {
+    for (let o = 0, t = 0; o < oneArr.length && o < 15, t < twoArr.length; ) {
         if (oneArr[o] > twoArr[t]) {
             chatId.push(oneArr[o])
             o++

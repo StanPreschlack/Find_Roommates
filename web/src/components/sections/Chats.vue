@@ -19,7 +19,7 @@ export default defineComponent({
         this.chats = data[0]
         this.targets = data[1]
         this.names = data[2]
-        console.log(this.names)
+        console.log(this.targets)
         this.currentChatId = this.chats[this.onIndex]
         this.messages = await getMessages(this.currentChatId)
         this.splitMessages()
@@ -45,9 +45,11 @@ export default defineComponent({
             this.onIndex = index
             this.currentChatId = this.chats[index]
             this.messages = await getMessages(this.currentChatId)
+            console.log(this.onIndex)
         },
         async sendMessage() {
             if (this.inputState !== "") {
+                console.log(this.onIndex)
                 await sendMessage(this.targets[this.onIndex], getAuth().currentUser.uid, this.inputState)
                 this.messages = await getMessages(this.currentChatId)
                 this.inputState = ""
