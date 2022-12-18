@@ -9,8 +9,6 @@ export default defineComponent({
             chats: "",
             currentChatId: "",
             messages: [],
-            other: [],
-            me: [],
             onIndex: 0,
             inputState: "",
             names: [],
@@ -24,11 +22,18 @@ export default defineComponent({
         console.log(this.names)
         this.currentChatId = this.chats[this.onIndex]
         this.messages = await getMessages(this.currentChatId)
+        this.splitMessages()
     },
     methods: {
         // splits by user for css styling
         splitMessages() {
-            
+            this.messages.forEach((message) => {
+                if (message.sender === getAuth().currentUser.uid) {
+                    message.class = "me"
+                } else {
+                    message.class = "other"
+                }
+            })
         },
         async Delete(message:object) {
             console.log(message)
@@ -61,7 +66,7 @@ export default defineComponent({
             </div>   
         </div>    
         <div class="chat-container">
-            <div class="chat-bubble {{ me }}" v-for="(message, index) in messages">
+            <div v-for="(message, index) in messages" class="chat-bubble {{ message.class }}">
                 <button @click.prevent="Delete(message)" id="delete">delete</button>
                 {{ message.content }}
             </div>

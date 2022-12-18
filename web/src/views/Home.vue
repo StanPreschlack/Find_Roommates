@@ -78,7 +78,7 @@ export default defineComponent({
 <template>
   <div id="header">
     <img src="/images/nyu-find-roommates-logo.png" alt="no image"/>
-    <button @click.prevent="Profile">edit profile</button>
+    <!-- <button @click.prevent="Profile">edit profile</button> -->
     <button @click.prevent="Chats">your messages</button>
     <button @click.prevent="Board">recent posts</button>
   </div>
@@ -88,9 +88,9 @@ export default defineComponent({
   <div id="loadingIcon">
     <div></div>
   </div>
-  <div v-if="profile">
+  <!-- <div v-if="profile">
     <Profile />
-  </div>
+  </div> -->
   <div v-if="chats">
     <Chats />
   </div>
