@@ -18,7 +18,7 @@ function getChatId(userIdOne:string, userIdTwo:string) {
     let twoArr = userIdTwo.toLowerCase().split("")
     let chatId:string[] = []
     // o is for one t is for two
-    for (let o = 0, t = 0; o < oneArr.length && o < 15, t < twoArr.length; ) {
+    for (let o = 0, t = 0; o < oneArr.length, t < twoArr.length; ) {
         if (oneArr[o] > twoArr[t]) {
             chatId.push(oneArr[o])
             o++
@@ -89,9 +89,9 @@ async function sendMessage(targetId:string, senderId:string, content:string, nam
 
     // this if checks to make sure the chat does not already exist in which case it simply adds the chat to the existing chat below
     // UPDATE: no external calls needed!!, use name instead
-    if (name) {
+    if (name !== undefined && name !== null && name.length > 0) {
         
-        await push(ref(getDatabase(app), "users/" + targetId), 
+        await set(ref(getDatabase(app), "users/" + targetId + "/" + chatId), 
             {
                 chatId: chatId,
                 name: name,
@@ -99,7 +99,7 @@ async function sendMessage(targetId:string, senderId:string, content:string, nam
             }
         )
 
-        await push(ref(getDatabase(app), "users/" + senderId), 
+        await set(ref(getDatabase(app), "users/" + senderId + "/" + chatId), 
             {
                 chatId: chatId,
                 name: name,

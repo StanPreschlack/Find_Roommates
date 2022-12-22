@@ -20,6 +20,8 @@ export default defineComponent({
             onIndex: 0,
             inputState: "",
             names: [],
+            senders: [],
+            user: getAuth().currentUser.uid,
         }
     },
     async beforeMount() {
@@ -30,20 +32,17 @@ export default defineComponent({
         console.log(this.targets)
         this.currentChatId = this.chats[this.onIndex]
         this.messages = await getMessages(this.currentChatId)
-        this.splitMessages()
+        // splits by sender for css styling
+        this.messages.forEach((message, index) => {
+            console.log(message, this.user)
+            if (message.sender === this.user) {
+                this.senders[index] = "me"
+            } else {
+                this.senders[index] = "other"
+            }
+        })
     },
     methods: {
-        // splits by user for css styling
-        splitMessages() {
-            this.messages.forEach((message) => {
-                console.log(message, getAuth().currentUser.uid)
-                if (message.sender === getAuth().currentUser.uid) {
-                    message.class = "me"
-                } else {
-                    message.class = "other"
-                }
-            })
-        },
         async Delete(message:object) {
             console.log(message)
             await deleteMessage(this.currentChatId, message.messageId)
@@ -80,7 +79,7 @@ export default defineComponent({
             </div>   
         </div>    
         <div class="chat-container">
-            <div v-for="(message, index) in messages" class="chat-bubble" :class="message.class">
+            <div v-for="(message, index) in messages" class="chat-bubble" :class="senders[index]">
                 <button @click.prevent="Delete(message)" id="delete">delete</button>
                 {{ message.content }}
             </div>
