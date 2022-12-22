@@ -29,20 +29,25 @@ export default defineComponent({
         this.chats = data[0]
         this.targets = data[1]
         this.names = data[2]
-        console.log(this.targets)
         this.currentChatId = this.chats[this.onIndex]
         this.messages = await getMessages(this.currentChatId)
-        // splits by sender for css styling
-        this.messages.forEach((message, index) => {
-            console.log(message, this.user)
-            if (message.sender === this.user) {
-                this.senders[index] = "me"
-            } else {
-                this.senders[index] = "other"
-            }
-        })
+        this.splitMessages()
+        
     },
     methods: {
+        // splits by sender for css styling
+        splitMessages() {
+            this.messages.forEach((message, index) => {
+                console.log(message, this.user)
+                if (message.sender === this.user) {
+                    this.senders[index] = "me"
+                    console.log("me")
+                } else {
+                    this.senders[index] = "other"
+                    console.log("other")
+                }
+            })
+        },
         async Delete(message:object) {
             console.log(message)
             await deleteMessage(this.currentChatId, message.messageId)
@@ -53,14 +58,18 @@ export default defineComponent({
         async showChat(index:number) {
             this.onIndex = index
             this.currentChatId = this.chats[index]
-            this.messages = await getMessages(this.currentChatId)
-            console.log(this.onIndex)
-            this.splitMessages()
+            //set interval here
+            setInterval( async () => {
+                this.messages = await getMessages(this.currentChatId)
+                this.splitMessages()
+                // this is the chat refresh rate in milliseconds
+                // TODO: there may be an issue with unbinding the setInterval process which could cause performance problems when switching chat, do some testing later
+            }, 5000)
         },
         async sendMessage() {
             if (this.inputState !== "") {
                 console.log(this.onIndex)
-                await sendMessage(this.targets[this.onIndex], getAuth().currentUser.uid, this.inputState)
+                await sendMessage(this.targets[this.onIndex], this.user, this.inputState)
                 this.messages = await getMessages(this.currentChatId)
                 this.inputState = ""
                 this.splitMessages()
@@ -79,8 +88,9 @@ export default defineComponent({
             </div>   
         </div>    
         <div class="chat-container">
-            <div v-for="(message, index) in messages" class="chat-bubble" :class="senders[index]">
-                <button @click.prevent="Delete(message)" id="delete">delete</button>
+            <div v-for="(message, index) in messages" class="chat-bubble" :class="this.senders[index]">
+                <!-- check if it is "me" -->
+                <button v-if="senders[index].length === 2" @click.prevent="Delete(message)" id="delete">delete</button>
                 {{ message.content }}
             </div>
             <div id="messageArea">

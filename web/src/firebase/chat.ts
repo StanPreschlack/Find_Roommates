@@ -10,26 +10,14 @@ const auth = getAuth(app)
 
 // accepts two user ids, generates a chat id that is the same for any two combinations of id regardless of order (which one is starting the chat) to find existing chats in the database properly
 
-function getChatId(userIdOne:string, userIdTwo:string) {
-    if (userIdOne.length !== userIdTwo.length) {
-        return "strings must be equal length"
+function getChatId(userIdOne: string, userIdTwo: string) {
+    if (userIdOne > userIdTwo) {
+      return userIdOne + userIdTwo
+    } else {
+      return userIdTwo + userIdOne
     }
-    let oneArr = userIdOne.toLowerCase().split("")
-    let twoArr = userIdTwo.toLowerCase().split("")
-    let chatId:string[] = []
-    // o is for one t is for two
-    for (let o = 0, t = 0; o < oneArr.length, t < twoArr.length; ) {
-        if (oneArr[o] > twoArr[t]) {
-            chatId.push(oneArr[o])
-            o++
-        } else {
-            chatId.push(twoArr[t])
-            t++
-        }
-    }
-    return chatId.join("")
 }
-
+  
 // gets an array of objects from firebase representing a series of chats sorted by timestamp, update chat using setTimeout() on frontend
 
 async function getMessages(chatId:string) {
@@ -82,6 +70,7 @@ async function getUserChatIds(userId:string) {
 // writes a new message to a chat data structure in firebase, then returns the state of the chat being written to
 
 async function sendMessage(targetId:string, senderId:string, content:string, name?:string) {
+    console.log("sending...")
     let chatId = getChatId(targetId, senderId)
     let messageId = uniqid()
 
@@ -110,7 +99,7 @@ async function sendMessage(targetId:string, senderId:string, content:string, nam
 
     // add to chats feild (will overwrite duplicate in case of two way message initiation)
 
-    await update(ref(getDatabase(app), "chats/" + chatId + "/" + messageId), 
+    await set(ref(getDatabase(app), "chats/" + chatId + "/" + messageId), 
         {
             timestamp: Date.now().toString(),
             target: targetId, 
