@@ -22,6 +22,7 @@ export default defineComponent({
             names: [],
             senders: [],
             user: getAuth().currentUser.uid,
+            intervalID: null,
         }
     },
     async beforeMount() {
@@ -56,14 +57,18 @@ export default defineComponent({
         },
         // gets messages from chat id and updates chat area
         async showChat(index:number) {
+            if (this.intervalID !== null) {
+                clearInterval(this.intervalID)
+            }
             this.onIndex = index
             this.currentChatId = this.chats[index]
+            this.messages = await getMessages(this.currentChatId)
+            this.splitMessages()
             //set interval here
-            setInterval( async () => {
+            this.intervalID = setInterval( async () => {
                 this.messages = await getMessages(this.currentChatId)
                 this.splitMessages()
                 // this is the chat refresh rate in milliseconds
-                // TODO: there may be an issue with unbinding the setInterval process which could cause performance problems when switching chat, do some testing later
             }, 5000)
         },
         async sendMessage() {
