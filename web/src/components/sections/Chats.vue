@@ -3,14 +3,6 @@ import { defineComponent, toRaw } from 'vue'
 import { getAuth } from "firebase/auth"
 import { sendMessage, deleteMessage, getMessages, getUserChatIds } from "/Users/spreschlack/Desktop/software projects/NYU_Find_Roomates/web/src/firebase/chat"
 
-// TODO: 
-
-// fix insertion bug that creates multiple feilds for a single chat in the realtime database
-// the below bugs are related the the following issue: firebase is creating new chats in the database when it sees a new message being sent, it needs to write to existing docs not create new ones, try out the messaging and look at the realtime databse to duplicate the bug
-// fix message formatting on the front end to allow for multiple styles on the same conversation (this is an issue somehow lol)
-// fix issue where chat is sent to wrong user sometimes
-// fix issue where getAuth() is tied to the device, maybe find another way to identify the client?
-
 export default defineComponent({
     data() {
         return {

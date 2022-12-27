@@ -3,13 +3,11 @@ import { defineComponent } from 'vue'
 import { getAuth } from "firebase/auth"
 import { sendMessage, deleteMessage, getMessages, getUserChatIds } from "/Users/spreschlack/Desktop/software projects/NYU_Find_Roomates/web/src/firebase/chat"
 
-// TODO: code split imports
-
-import MakePostButton from "../components/misc/MakePostButton.vue"
-import Board from "../components/sections/Board.vue"
-import Chats from "../components/sections/Chats.vue"
-import Settings from "../components/sections/Settings.vue"
-import Profile from "../components/sections/Profile.vue"
+const MakePostButton = () => import("../components/misc/MakePostButton.vue")
+const Board = () => import("../components/sections/Board.vue")
+const Chats = () => import("../components/sections/Chats.vue")
+const Settings = () => import("../components/sections/Settings.vue")
+const Profile = () => import("../components/sections/Profile.vue")
 
 export default defineComponent({
   beforeMount() {
